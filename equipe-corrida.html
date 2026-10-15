@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ritmo Urbano Run | Equipe de Corrida de Rua</title>
+<meta name="description" content="Assessoria de corrida de rua com treino em grupo, planilhas personalizadas e comunidade. Comece hoje.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,800;1,900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== TOKENS ===== */
+:root{
+  --bg:#14161a;          /* antracite */
+  --surface:#1d2026;     /* cards */
+  --line:#2c3038;
+  --text:#f2f4f0;
+  --muted:#a3a9b3;
+  --lime:#c6ff1a;        /* neon principal */
+  --orange:#ff6a1f;      /* neon de apoio */
+  --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --wrap:min(1200px,100% - 2.5rem);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{background:var(--bg);color:var(--text);font:400 1.05rem/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--lime);outline-offset:3px}
+.wrap{width:var(--wrap);margin-inline:auto}
+section{padding:clamp(4rem,9vw,8rem) 0}
+h1,h2,h3{font-family:var(--display);font-style:italic;font-weight:900;line-height:.95;letter-spacing:-.01em}
+h2{font-size:clamp(2.4rem,6vw,4.5rem);margin-bottom:1rem}
+.lead{color:var(--muted);max-width:60ch}
+
+/* ===== BOTÕES (hover, active, ripple, estado de sucesso) ===== */
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.95rem 1.7rem;border:2px solid var(--lime);border-radius:999px;background:var(--lime);color:#0c0e10;
+  font:600 1rem var(--body);text-decoration:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s,background .2s,color .2s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 28px -8px var(--lime)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--lime);color:var(--lime);box-shadow:none}
+.btn.done{background:#fff;border-color:#fff;color:#0c0e10}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);animation:rip .6s ease-out;pointer-events:none}
+@keyframes rip{to{transform:scale(4);opacity:0}}
+
+/* ===== MENU ===== */
+header{position:fixed;inset:0 0 auto;z-index:50;background:rgba(20,22,26,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav{width:var(--wrap);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font:italic 900 1.5rem var(--display);text-decoration:none}
+.logo b{color:var(--lime)}
+nav ul{display:flex;gap:1.6rem;list-style:none;padding:0}
+nav ul a{text-decoration:none;color:var(--muted);font-weight:500;transition:color .2s}
+nav ul a:hover{color:var(--lime)}
+@media(max-width:760px){nav ul{display:none}}
+
+/* ===== HERO: raias de pista animadas ===== */
+.hero{position:relative;min-height:100svh;display:grid;align-items:center;padding-top:110px;overflow:hidden;
+  background:radial-gradient(900px 500px at 85% 10%,rgba(198,255,26,.14),transparent 60%),
+             radial-gradient(700px 500px at 0% 100%,rgba(255,106,31,.16),transparent 60%),var(--bg)}
+.lanes{position:absolute;inset:0;transform:skewY(-12deg) scale(1.3);opacity:.5;pointer-events:none}
+.lanes i{position:absolute;left:-10%;width:120%;height:2px;background:linear-gradient(90deg,transparent,var(--lime),transparent);
+  background-size:30% 100%;background-repeat:no-repeat;animation:dash 5s linear infinite}
+.lanes i:nth-child(1){top:22%}.lanes i:nth-child(2){top:34%;animation-delay:-1.2s;background-image:linear-gradient(90deg,transparent,var(--orange),transparent)}
+.lanes i:nth-child(3){top:46%;animation-delay:-2.4s}.lanes i:nth-child(4){top:58%;animation-delay:-3.1s;background-image:linear-gradient(90deg,transparent,var(--orange),transparent)}
+.lanes i:nth-child(5){top:70%;animation-delay:-.6s}
+@keyframes dash{from{background-position:-40% 0}to{background-position:140% 0}}
+.hero .wrap{position:relative}
+.hero h1{font-size:clamp(3.4rem,13vw,10rem);text-transform:uppercase;max-width:11ch}
+.hero h1 span{display:block;color:transparent;-webkit-text-stroke:2px var(--lime)}
+.hero p{font-size:clamp(1.1rem,2vw,1.4rem);color:var(--muted);max-width:40ch;margin:1.5rem 0 2.2rem}
+.hero .cta{display:flex;flex-wrap:wrap;gap:1rem}
+/* animação única de entrada da hero */
+.hero h1 span,.hero h1,.hero p,.hero .cta{animation:in .9s cubic-bezier(.2,.7,.2,1) both}
+.hero h1 span{animation-delay:.15s}.hero p{animation-delay:.35s}.hero .cta{animation-delay:.5s}
+@keyframes in{from{opacity:0;transform:translateY(40px) skewX(-6deg)}to{opacity:1;transform:none}}
+
+/* ===== SOBRE ===== */
+.about{display:grid;gap:3rem;grid-template-columns:1.1fr .9fr;align-items:center}
+.pillars{display:grid;gap:1rem;margin-top:1.5rem;padding:0;list-style:none}
+.pillars li{padding-left:1.2rem;border-left:3px solid var(--orange)}
+.pillars strong{display:block;font-size:1.1rem}
+.pillars span{color:var(--muted)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1.6rem}
+.stat:first-child{grid-column:1/-1;background:var(--lime);color:#0c0e10;border:0}
+.stat b{display:block;font:italic 900 clamp(2.6rem,6vw,4.4rem)/1 var(--display)}
+.stat small{font-size:.95rem;opacity:.75}
+@media(max-width:860px){.about{grid-template-columns:1fr}}
+
+/* ===== PLANOS ===== */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.4rem;margin-top:3rem;align-items:stretch}
+.plan{position:relative;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:2rem;transition:transform .3s,border-color .3s}
+.plan:hover{transform:translateY(-6px);border-color:var(--muted)}
+.plan.hot{border:2px solid var(--lime);background:linear-gradient(180deg,rgba(198,255,26,.1),var(--surface) 45%);transform:scale(1.03)}
+.plan.hot:hover{transform:scale(1.03) translateY(-6px)}
+.badge{position:absolute;top:-14px;left:2rem;background:var(--orange);color:#0c0e10;font-weight:600;font-size:.85rem;padding:.3rem .9rem;border-radius:999px}
+.plan h3{font-size:2rem}
+.price{font:italic 900 3rem/1 var(--display);margin:1rem 0 .2rem}
+.price small{font:400 1rem var(--body);color:var(--muted)}
+.plan ul{list-style:none;padding:0;margin:1.2rem 0 2rem;display:grid;gap:.6rem;flex:1}
+.plan li{padding-left:1.7rem;position:relative}
+.plan li::before{content:"";position:absolute;left:0;top:.5em;width:.9rem;height:.5rem;border-left:3px solid var(--lime);border-bottom:3px solid var(--lime);transform:rotate(-45deg)}
+.plan .btn{width:100%}
+
+/* ===== TREINADOR ===== */
+.coach{display:grid;grid-template-columns:minmax(240px,380px) 1fr;gap:clamp(2rem,6vw,5rem);align-items:center}
+.avatar{aspect-ratio:4/5;border-radius:26px;background:linear-gradient(160deg,var(--lime),var(--orange));display:grid;place-items:end center;overflow:hidden;position:relative}
+.avatar svg{width:88%}
+.tags{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.5rem 0;padding:0;list-style:none}
+.tags li{border:1px solid var(--line);background:var(--surface);padding:.4rem 1rem;border-radius:999px;font-size:.95rem}
+@media(max-width:760px){.coach{grid-template-columns:1fr}.avatar{max-width:320px}}
+
+/* ===== CONTATO ===== */
+.contact{background:var(--surface);border-block:1px solid var(--line)}
+.contact .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,5rem)}
+form{display:grid;gap:1rem}
+label{display:grid;gap:.35rem;font-weight:500;font-size:.95rem}
+input,textarea{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem;transition:border-color .2s}
+input:focus,textarea:focus{outline:none;border-color:var(--lime)}
+textarea{min-height:120px;resize:vertical}
+.quick{display:flex;flex-wrap:wrap;gap:.8rem;margin:1.5rem 0}
+.social{display:flex;gap:.8rem;list-style:none;padding:0}
+.social a{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);transition:.25s}
+.social a:hover{background:var(--lime);color:#0c0e10;transform:translateY(-4px) rotate(-6deg)}
+.social svg{width:22px;height:22px;fill:currentColor}
+@media(max-width:860px){.contact .grid{grid-template-columns:1fr}}
+footer{padding:2rem 0;text-align:center;color:var(--muted);font-size:.9rem}
+
+/* ===== TOAST ===== */
+#toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,120px);background:var(--lime);color:#0c0e10;font-weight:600;padding:.9rem 1.6rem;border-radius:999px;z-index:99;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+#toast.show{transform:translate(-50%,0)}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s}
+.reveal.on{opacity:1;transform:none}
+
+/* Ultra-wide: mais respiro e tipografia maior */
+@media(min-width:1800px){:root{--wrap:min(1500px,100% - 4rem)}body{font-size:1.2rem}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav aria-label="Principal">
+    <a class="logo" href="#inicio">RITMO<b>URBANO</b></a>
+    <ul>
+      <li><a href="#sobre">Equipe</a></li>
+      <li><a href="#planos">Planos</a></li>
+      <li><a href="#treinador">Treinador</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="lanes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="wrap">
+    <h1>Corra com a <span>sua equipe</span></h1>
+    <p>Treinos em grupo, planilha sob medida e uma comunidade que corre junto até a linha de chegada.</p>
+    <div class="cta">
+      <a class="btn" href="#planos">Escolher meu plano</a>
+      <a class="btn ghost" href="#contato">Fazer treino experimental</a>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="wrap about">
+    <div class="reveal">
+      <h2>Ninguém corre sozinho aqui</h2>
+      <p class="lead">Somos uma equipe de corrida de rua feita por pessoas comuns que querem ir além. Da primeira caminhada-corrida aos 42 km, cada atleta tem um plano e um grupo ao lado.</p>
+      <ul class="pillars">
+        <li><strong>Comunidade</strong><span>Treinos coletivos em parques e ruas fechadas, com pace para cada nível.</span></li>
+        <li><strong>Superação</strong><span>Metas reais, acompanhadas semana a semana, sem comparar você com ninguém.</span></li>
+        <li><strong>Saúde e performance</strong><span>Prevenção de lesões, fortalecimento e descanso entram na planilha.</span></li>
+      </ul>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><b data-count="128450" data-suffix=" km">0</b><small>percorridos pela equipe em 2026</small></div>
+      <div class="stat"><b data-count="340">0</b><small>atletas ativos</small></div>
+      <div class="stat"><b data-count="87">0</b><small>pódios conquistados</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANOS -->
+<section id="planos">
+  <div class="wrap">
+    <div class="reveal">
+      <h2>Escolha o seu ritmo</h2>
+      <p class="lead">Sem fidelidade. Cancele quando quiser e troque de plano a qualquer momento.</p>
+    </div>
+    <div class="plans">
+      <article class="plan reveal">
+        <h3>Iniciante</h3>
+        <div class="price">R$ 89<small> /mês</small></div>
+        <p class="lead">Para quem está começando ou voltando a correr.</p>
+        <ul><li>Planilha para os primeiros 5 km</li><li>2 treinos em grupo por semana</li><li>Grupo de apoio no WhatsApp</li><li>Aula mensal de técnica de corrida</li></ul>
+        <button class="btn ghost" data-plan="Iniciante">Quero este</button>
+      </article>
+      <article class="plan hot reveal">
+        <span class="badge">Mais escolhido</span>
+        <h3>Avançado</h3>
+        <div class="price">R$ 149<small> /mês</small></div>
+        <p class="lead">Para quem corre 10 km ou meia maratona e quer evoluir.</p>
+        <ul><li>Planilha periodizada com ajustes mensais</li><li>Treinos em grupo ilimitados</li><li>Treinos de fortalecimento</li><li>Análise de dados do Strava</li><li>Desconto em inscrições de provas</li></ul>
+        <button class="btn" data-plan="Avançado">Assinar agora</button>
+      </article>
+      <article class="plan reveal">
+        <h3>Elite</h3>
+        <div class="price">R$ 289<small> /mês</small></div>
+        <p class="lead">Acompanhamento individual para buscar pódio e recordes.</p>
+        <ul><li>Treinos 100% personalizados</li><li>Feedback diário com o treinador</li><li>Avaliação física trimestral</li><li>Estratégia de prova e pacing</li></ul>
+        <button class="btn ghost" data-plan="Elite">Quero este</button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- TREINADOR -->
+<section id="treinador">
+  <div class="wrap coach">
+    <div class="avatar reveal" role="img" aria-label="Ilustração do treinador Rafael Menezes">
+      <svg viewBox="0 0 200 220" aria-hidden="true">
+        <circle cx="100" cy="70" r="38" fill="#14161a"/>
+        <path d="M62 62c4-30 70-34 76 0-18-12-58-12-76 0z" fill="#0c0e10"/>
+        <path d="M20 220c0-62 36-96 80-96s80 34 80 96z" fill="#14161a"/>
+        <path d="M80 130l20 22 20-22" stroke="#c6ff1a" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <rect x="82" y="168" width="36" height="14" rx="4" fill="#c6ff1a"/>
+      </svg>
+    </div>
+    <div class="reveal">
+      <h2>Rafael Menezes</h2>
+      <p class="lead">Treinador-chefe e fundador da equipe. Começou a correr aos 19 anos para emagrecer e hoje já completou mais de 40 maratonas. Transformou a paixão em método: treino simples, progressivo e sustentável.</p>
+      <ul class="tags">
+        <li>CREF 000000-G/MT</li>
+        <li>Pós em Fisiologia do Exercício</li>
+        <li>Certificado em Treinamento de Corrida</li>
+        <li>Melhor marca: maratona em 2h58</li>
+        <li>12 anos de experiência</li>
+      </ul>
+      <a class="btn" href="#contato">Falar com o treinador</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="contact" id="contato">
+  <div class="wrap grid">
+    <div class="reveal">
+      <h2>Vamos correr juntos?</h2>
+      <p class="lead">Conte seu objetivo e o treinador responde em até 24 horas. Prefere ir direto? Use um atalho.</p>
+      <div class="quick">
+        <a class="btn" id="wa" href="https://wa.me/5565999999999?text=Ol%C3%A1!%20Quero%20conhecer%20a%20equipe%20Ritmo%20Urbano." target="_blank" rel="noopener">Chamar no WhatsApp</a>
+        <button class="btn ghost" id="copyMail" data-mail="contato@ritmourbano.com.br">Copiar e-mail</button>
+      </div>
+      <ul class="social" aria-label="Redes sociais">
+        <li><a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H7zm5 3.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9zm0 2a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM17.5 6a1 1 0 110 2 1 1 0 010-2z"/></svg></a></li>
+        <li><a href="https://strava.com/" target="_blank" rel="noopener" aria-label="Strava"><svg viewBox="0 0 24 24"><path d="M15.4 17.9l-2.6-5.1h-3.9L15.4 24l6.5-11.2h-3.9zM10.2 0L3.6 13.4h4l2.6-5.3 2.6 5.3h4z"/></svg></a></li>
+        <li><a href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 7.2a3 3 0 00-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 001 7.2 31 31 0 00.5 12 31 31 0 001 16.800a3 3 0 002.1 2.100c1.900.5 8.900.5 8.900.5s7 0 8.900-.5a3 3 0 002.100-2.100c.4-1.600.5-3.200.5-4.800s-.1-3.200-.5-4.800zM9.700 15.200V8.800l5.800 3.200z"/></svg></a></li>
+      </ul>
+    </div>
+    <form class="reveal" id="form" novalidate>
+      <label>Nome<input name="nome" required autocomplete="name"></label>
+      <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+      <label>Qual é o seu objetivo?<textarea name="msg" required placeholder="Ex.: correr meus primeiros 10 km"></textarea></label>
+      <button class="btn" type="submit">Enviar mensagem</button>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>© 2026 Ritmo Urbano Run. Todos os direitos reservados.</footer>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===== Toast de feedback ===== */
+const toast = document.getElementById('toast');
+let toastTimer;
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.remove('show'), 2800);
+}
+
+/* ===== Ripple em todos os botões ===== */
+document.querySelectorAll('.btn').forEach(btn=>{
+  btn.addEventListener('click', e=>{
+    const r = btn.getBoundingClientRect(), size = Math.max(r.width, r.height);
+    const s = document.createElement('span');
+    s.className = 'ripple';
+    s.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px`;
+    btn.appendChild(s);
+    setTimeout(()=>s.remove(), 600);
+  });
+});
+
+/* Muda o botão para "feito" por 2s */
+function flash(btn, text){
+  const old = btn.dataset.old || btn.firstChild.textContent;
+  btn.dataset.old = old;
+  btn.firstChild.textContent = text;
+  btn.classList.add('done');
+  setTimeout(()=>{ btn.firstChild.textContent = old; btn.classList.remove('done'); }, 2000);
+}
+
+/* ===== Escolha de plano: leva ao formulário já preenchido ===== */
+document.querySelectorAll('[data-plan]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const plan = btn.dataset.plan;
+    form.msg.value = `Quero assinar o plano ${plan}. Meu objetivo: `;
+    flash(btn, 'Plano selecionado');
+    showToast(`Plano ${plan} selecionado. Complete o formulário.`);
+    setTimeout(()=>document.getElementById('contato').scrollIntoView({behavior:'smooth'}), 500);
+  });
+});
+
+/* ===== Copiar e-mail ===== */
+const copyBtn = document.getElementById('copyMail');
+copyBtn.addEventListener('click', async ()=>{
+  try{
+    await navigator.clipboard.writeText(copyBtn.dataset.mail);
+    flash(copyBtn, 'Copiado');
+    showToast('E-mail copiado');
+  }catch{
+    showToast('Copie manualmente: ' + copyBtn.dataset.mail);
+  }
+});
+
+/* ===== Formulário: valida e abre o app de e-mail do usuário =====
+   Para envio real, troque por fetch() para Formspree, EmailJS ou seu backend. */
+const form = document.getElementById('form');
+form.addEventListener('submit', e=>{
+  e.preventDefault();
+  if(!form.checkValidity()){
+    form.reportValidity();
+    showToast('Preencha todos os campos');
+    return;
+  }
+  const d = new FormData(form);
+  const body = encodeURIComponent(`${d.get('msg')}\n\nNome: ${d.get('nome')}\nE-mail: ${d.get('email')}`);
+  window.location.href = `mailto:contato@ritmourbano.com.br?subject=Contato pelo site&body=${body}`;
+  flash(form.querySelector('button'), 'Mensagem enviada');
+  showToast('Mensagem enviada');
+  form.reset();
+});
+
+/* ===== Scroll reveal + contadores ===== */
+function countUp(el){
+  const end = +el.dataset.count, suffix = el.dataset.suffix || '', t0 = performance.now(), dur = 1600;
+  (function tick(t){
+    const p = Math.min((t - t0)/dur, 1), v = Math.round(end * (1 - Math.pow(1-p, 3)));
+    el.textContent = v.toLocaleString('pt-BR') + suffix;
+    if(p < 1) requestAnimationFrame(tick);
+  })(t0);
+}
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(!en.isIntersecting) return;
+    en.target.classList.add('on');
+    en.target.querySelectorAll('[data-count]').forEach(countUp);
+    io.unobserve(en.target);
+  });
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
